@@ -4,11 +4,14 @@ import { CreatPostRequest, CreatePostResponse, ListPostsRequest, ListPostsRespon
 import { db } from '../datastore';
 import { ExpressHandler, Post } from '../types';
 
-export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostsResponse> = (_req, res) => {
-  res.send({ posts: db.listPost() });
+export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostsResponse> = async (
+  _req,
+  res
+) => {
+  res.send({ posts: await db.listPost() });
 };
 
-export const createPostHandler: ExpressHandler<CreatPostRequest, CreatePostResponse> = (
+export const createPostHandler: ExpressHandler<CreatPostRequest, CreatePostResponse> = async (
   req,
   res
 ) => {
@@ -24,6 +27,6 @@ export const createPostHandler: ExpressHandler<CreatPostRequest, CreatePostRespo
     url: req.body.url,
     userId: req.body.userId,
   };
-  db.creatPost(post);
+  await db.creatPost(post);
   res.sendStatus(200);
 };

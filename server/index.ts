@@ -1,4 +1,5 @@
-import express from 'express';
+import express, { ErrorRequestHandler } from 'express';
+import asyncHandler from 'express-async-handler';
 import { RequestHandler } from 'express-serve-static-core';
 
 import { createPostHandler, listPostHandler } from './handlers/postHandlers';
@@ -12,8 +13,13 @@ const requestMiddelWare: RequestHandler = (req, _res, next) => {
 };
 app.use(requestMiddelWare);
 
-app.get('/posts', listPostHandler);
+app.get('/posts', asyncHandler(listPostHandler));
 
-app.post('/posts', createPostHandler);
+app.post('/posts', asyncHandler(createPostHandler));
 
+const errHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  console.error('Uncaught exception', err);
+  return res.status(500).send('Opps, an error occurred, please try again');
+};
+app.use(errHandler);
 app.listen(3000);
