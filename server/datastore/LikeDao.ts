@@ -1,6 +1,5 @@
-import { Like } from "../types";
+import { Like } from '../types';
 
-export interface LikeDao{
-
-    createLike(like:Like):void;
+export interface LikeDao {
+  createLike(like: Like): void;
 }

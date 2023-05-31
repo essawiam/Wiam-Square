@@ -1,8 +1,7 @@
-import { User } from "../types";
+import { User } from '../types';
 
-
-export interface UserDao{
-    createUser(user: User):void;
-    getUserByEmail(email:string): User | undefined;
-    getUserByName(name:string): User | undefined;
+export interface UserDao {
+  createUser(user: User): void;
+  getUserByEmail(email: string): User | undefined;
+  getUserByName(name: string): User | undefined;
 }
