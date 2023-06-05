@@ -1,7 +1,7 @@
-import { dataStore } from '..';
+import { DataStore } from '..';
 import { Comment, Like, Post, User } from '../../types';
 
-export class InMemoryDataStore implements dataStore {
+export class InMemoryDataStore implements DataStore {
   private users: User[] = [];
   private posts: Post[] = [];
   private likes: Like[] = [];
