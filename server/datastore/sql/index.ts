@@ -1,21 +1,24 @@
 import path from 'path';
-import { open as sqlitOpen } from 'sqlite';
+import { Database, open as sqlitOpen } from 'sqlite';
 import sqlite3 from 'sqlite3';
 
 import { DataStore } from '..';
 import { Comment, Like, Post, User } from '../../types';
 
 export class sqlDataStore implements DataStore {
+  private db!: Database<sqlite3.Database, sqlite3.Statement>;
   public async openDb() {
-    const db = await sqlitOpen({
+    this.db = await sqlitOpen({
       filename: path.join(__dirname, 'wiamdb.sqlite'),
       driver: sqlite3.Database,
     });
-    await db.migrate({
+    this.db.run('PRAGMA foreign_keys = ON;');
+    this.db.migrate({
       migrationsPath: path.join(__dirname, 'migrations'),
     });
     return this;
   }
+  // User
   createUser(_user: User): Promise<void> {
     throw new Error('Method not implemented.');
   }
@@ -25,6 +28,7 @@ export class sqlDataStore implements DataStore {
   getUserByName(_name: string): Promise<User | undefined> {
     throw new Error('Method not implemented.');
   }
+  // Comment
   createComment(_comment: Comment): Promise<void> {
     throw new Error('Method not implemented.');
   }
@@ -34,11 +38,19 @@ export class sqlDataStore implements DataStore {
   deleteComment(_id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
+  // Post
   listPost(): Promise<Post[]> {
-    throw new Error('Method not implemented.');
+    return this.db.all<Post[]>('SELECT * FROM posts');
   }
-  creatPost(_post: Post): Promise<void> {
-    throw new Error('Method not implemented.');
+  async creatPost(post: Post): Promise<void> {
+    await this.db.run(
+      'INSERT INTO posts (id, title, url, postedAt, userId) VALUES (?,?,?,?,?)',
+      post.id,
+      post.title,
+      post.url,
+      post.postAt,
+      post.userId
+    );
   }
   getPost(_id: string): Promise<Post | undefined> {
     throw new Error('Method not implemented.');
@@ -46,6 +58,7 @@ export class sqlDataStore implements DataStore {
   deletePost(_id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
+  //Like
   createLike(_like: Like): Promise<void> {
     throw new Error('Method not implemented.');
   }
