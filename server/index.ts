@@ -4,6 +4,7 @@ import { RequestHandler } from 'express-serve-static-core';
 
 import { initDb } from './datastore';
 import { createPostHandler, listPostHandler } from './handlers/postHandlers';
+import { signInHandler, signUpHandler } from './handlers/userHandlers';
 
 (async () => {
   await initDb();
@@ -22,8 +23,12 @@ import { createPostHandler, listPostHandler } from './handlers/postHandlers';
   };
   app.use(errHandler);
   // Post
-  app.get('/posts', asyncHandler(listPostHandler));
-  app.post('/posts', asyncHandler(createPostHandler));
+  app.get('/v1/posts', asyncHandler(listPostHandler));
+  app.post('/v1/posts', asyncHandler(createPostHandler));
+
+  // User
+  app.post('/v1/signup', asyncHandler(signUpHandler));
+  app.post('/v1/signin', asyncHandler(signInHandler));
 
   app.listen(3000);
 })();
