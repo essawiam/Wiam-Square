@@ -1,26 +1,19 @@
-import express, { ErrorRequestHandler } from 'express';
+import express from 'express';
 import asyncHandler from 'express-async-handler';
-import { RequestHandler } from 'express-serve-static-core';
 
 import { initDb } from './datastore';
+import { signInHandler, signUpHandler } from './handlers/authHandlers';
 import { createPostHandler, listPostHandler } from './handlers/postHandlers';
-import { signInHandler, signUpHandler } from './handlers/userHandlers';
+import { errHandler } from './middelware/errorMiddelware';
+import { requestMiddelWare } from './middelware/loggerMiddelware';
 
 (async () => {
   await initDb();
   const app = express();
   app.use(express.json());
 
-  const requestMiddelWare: RequestHandler = (req, _res, next) => {
-    console.log('Methos = ', req.method, 'Path = ', req.path, 'Body = ', req.body);
-    next();
-  };
   app.use(requestMiddelWare);
 
-  const errHandler: ErrorRequestHandler = (err, _req, res, _next) => {
-    console.error('Uncaught exception', err);
-    return res.status(500).send('Opps, an error occurred, please try again');
-  };
   app.use(errHandler);
   // Post
   app.get('/v1/posts', asyncHandler(listPostHandler));
