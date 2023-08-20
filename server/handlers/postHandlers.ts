@@ -17,7 +17,7 @@ export const createPostHandler: ExpressHandler<CreatPostRequest, CreatePostRespo
 ) => {
   //TODO : Do the validation
 
-  if (!req.body.title || !req.body.url || !req.body.userId) {
+  if (!req.body.title || !req.body.url) {
     return res.sendStatus(400);
   }
   const post: Post = {
@@ -25,7 +25,7 @@ export const createPostHandler: ExpressHandler<CreatPostRequest, CreatePostRespo
     postAt: Date.now(),
     title: req.body.title,
     url: req.body.url,
-    userId: req.body.userId,
+    userId: res.locals.userId,
   };
   await db.creatPost(post);
   res.sendStatus(200);

@@ -5,7 +5,7 @@ export interface ListPostsRequest {}
 export interface ListPostsResponse {
   posts: Post[];
 }
-export type CreatPostRequest = Pick<Post, 'title' | 'url' | 'userId'>;
+export type CreatPostRequest = Pick<Post, 'title' | 'url'>;
 export interface CreatePostResponse {}
 
 export interface GetPostRequest {}
