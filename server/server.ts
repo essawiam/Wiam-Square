@@ -29,5 +29,5 @@ import { requestMiddelWare } from './middelware/loggerMiddelware';
   app.get('/v1/posts', asyncHandler(listPostHandler));
   app.post('/v1/posts', asyncHandler(createPostHandler));
 
-  app.listen(3000);
+  app.listen(process.env.PORT || 3000);
 })();
