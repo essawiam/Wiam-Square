@@ -19,6 +19,7 @@ import { requestMiddelWare } from './middelware/loggerMiddelware';
 
   app.use(errHandler);
   // Public endpoints
+  app.get('/healthz', (_req, res) => res.send({ status: 'Okay' }));
   app.post('/v1/signup', asyncHandler(signUpHandler));
   app.post('/v1/signin', asyncHandler(signInHandler));
 
