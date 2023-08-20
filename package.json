@@ -4,7 +4,8 @@
   "description": "This is a new project for fullstack js app.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/server.ts"
+    "start": "nodemon server/server.ts",
+    "start:prod": "pm2 delete wiamsquare; pm2 start --name wiamsquare \"npx ts-node --transpile-only server.ts\""
   },
   "author": "",
   "license": "ISC",
